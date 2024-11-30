@@ -23,8 +23,7 @@ if __name__ == "__main__":
         raise ValueError("Missing `COOKIE` environment variable")
 
     response = requests.get(
-        # TODO: change the year to 2024
-        url=f"https://adventofcode.com/2023/day/{args.day}/input",
+        url=f"https://adventofcode.com/2024/day/{args.day}/input",
         cookies={"session": COOKIE},
         headers={
             "User-Agent": "https://github.com/japiirainen/aoc-2024 by japiirainen@proton.me"
