@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 
-from collections import Counter
 import numpy as np
 
 pairs = [list(map(int, line.split("   "))) for line in open(0).read().splitlines()]
 
-xs, ys = np.sort(np.transpose(pairs))
+ls, rs = np.sort(np.transpose(pairs)).tolist()
 
-counts: Counter[int] = Counter(xs)
-
-print(sum(y * (counts.get(y) or 0) for y in ys))
+print(sum(x * rs.count(x) for x in ls))
