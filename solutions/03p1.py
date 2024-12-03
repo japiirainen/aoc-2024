@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import re
+import parse
 
-pairs = [tuple(map(int, p)) for p in re.findall(r"mul\((\d+),(\d+)\)", open(0).read())]
-
-print(sum(x * y for x, y in pairs))
+print(sum(a * b for a, b in parse.findall(r"mul({:d},{:d})", open(0).read())))

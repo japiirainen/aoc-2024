@@ -26,6 +26,7 @@
               sympy
               more-itertools
               requests
+              parse
             ])
             ++ (with pkgs; [
               (writeScriptBin "aoc" "${pkgs.python}/bin/python solve.py < input.txt")
