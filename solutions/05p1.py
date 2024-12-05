@@ -4,27 +4,20 @@ from collections import defaultdict
 
 a, b = open(0).read().split("\n\n")
 
-rules = defaultdict(list)
+rules = defaultdict(int)
 for x, y in [tuple(map(int, x.split("|"))) for x in a.splitlines()]:
-    rules[x].append(y)
+    rules[(x, y)] = 1
+    rules[(y, x)] = -1
+
 
 pages = [list(map(int, x.split(","))) for x in b.splitlines()]
 
 
-def valid_update(x: int, page: list[int]) -> bool:
-    rule = rules.get(x)
-    if not rule:
-        return True
-    for x in page:
-        if any(r == x for r in rule):
-            return False
-    return True
-
-
-def valid_page(page: list[int]):
+def valid_page(page: list[int]) -> bool:
     for i in range(len(page)):
-        if not valid_update(page[i], page[:i]):
-            return False
+        for j in range(i + 1, len(page)):
+            if rules.get((page[i], page[j])) == -1:
+                return False
     return True
 
 

@@ -1,45 +1,30 @@
 #!/usr/bin/env python
 
 from collections import defaultdict
+from functools import cmp_to_key
 
 a, b = open(0).read().split("\n\n")
 
-rules = defaultdict(list)
+
+rules = defaultdict(int)
 for x, y in [tuple(map(int, x.split("|"))) for x in a.splitlines()]:
-    rules[x].append(y)
+    rules[(x, y)] = 1
+    rules[(y, x)] = -1
 
 pages = [list(map(int, x.split(","))) for x in b.splitlines()]
 
 
-def valid_update(x: int, page: list[int]) -> bool:
-    return all(not any(r == p for r in rules.get(x, [x])) for p in page)
-
-
-def valid_page(page: list[int]):
+def valid_page(page: list[int]) -> bool:
     for i in range(len(page)):
-        if not valid_update(page[i], page[:i]):
-            return False
+        for j in range(i + 1, len(page)):
+            if rules.get((page[i], page[j])) == -1:
+                return False
     return True
-
-
-def fix_page(page: list[int]) -> list[int]:
-    def go(p: list[int], idx: int) -> list[int]:
-        if idx >= len(p):
-            return p
-
-        for j, x in enumerate(p[:idx]):
-            for r in rules.get(page[idx], [page[idx]]):
-                if x == r:
-                    p[idx], p[j] = p[j], p[idx]
-
-        return go(p, idx + 1)
-
-    return go(page, 1)
 
 
 print(
     sum(
-        fix_page(page)[len(page) // 2]
+        sorted(page, key=cmp_to_key(lambda x, y: rules.get((x, y), 0)))[len(page) // 2]
         for page in [page for page in pages if not valid_page(page)]
     )
 )
