@@ -27,14 +27,10 @@ def fix_page(page: list[int]) -> list[int]:
         if idx >= len(p):
             return p
 
-        cur = page[idx]
-        rule = rules.get(cur, [cur])
         for j, x in enumerate(p[:idx]):
-            for r in rule:
+            for r in rules.get(page[idx], [page[idx]]):
                 if x == r:
-                    cur = p[idx]
-                    p[idx] = r
-                    p[j] = cur
+                    p[idx], p[j] = p[j], p[idx]
 
         return go(p, idx + 1)
 
