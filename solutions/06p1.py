@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 
-grid = {
-    complex(r, c): x
-    for r, line in enumerate(open(0))
-    for c, x in enumerate(line.strip())
-}
+grid = {r + c * 1j: l for r, l in enumerate(open(0)) for c, l in enumerate(l.strip())}
 
 start = next(c for c, x in grid.items() if x == "^")
 
