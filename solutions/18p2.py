@@ -5,11 +5,7 @@ from collections import deque
 R = 71
 C = 71
 
-bts = deque(
-    [tuple([int(x) for x in line.split(",")]) for line in open(0).read().splitlines()]
-)
-
-grid = [["." for _ in range(C)] for _ in range(R)]
+bts = [tuple([int(x) for x in line.split(",")]) for line in open(0).read().splitlines()]
 
 
 def way(grid):
@@ -36,9 +32,17 @@ def way(grid):
     return None
 
 
-while bts:
-    br, bc = bts.popleft()
-    grid[br][bc] = "#"
-    if not way(grid):
-        print(f"{br},{bc}")
-        exit(0)
+lo, hi = 0, len(bts) - 1
+
+while lo < hi:
+    mid = (lo + hi) // 2
+    grid = [["." for _ in range(C)] for _ in range(R)]
+    for i in range(mid + 1):
+        br, bc = bts[i]
+        grid[br][bc] = "#"
+    if way(grid):
+        lo = mid + 1
+    else:
+        hi = mid
+
+print(*bts[lo], sep=",")
