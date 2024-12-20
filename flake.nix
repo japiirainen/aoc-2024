@@ -27,6 +27,7 @@
               more-itertools
               requests
               parse
+              networkx
             ])
             ++ (with pkgs; [
               (writeScriptBin "aoc" "${pkgs.python}/bin/python solve.py < input.txt")
