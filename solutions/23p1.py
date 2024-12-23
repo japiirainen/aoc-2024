@@ -1,21 +1,20 @@
 #!/usr/bin/env python
 
-import sys
-import networkx as nx
+from collections import defaultdict
 
-G = nx.Graph()
+conns = defaultdict(set)
 
 for line in open(0).read().splitlines():
     a, b = line.split("-")
-    G.add_edge(a, b)
+    conns[a].add(b)
+    conns[b].add(a)
 
-best = set()
+sets = set()
 
-for i in range(2, sys.maxsize):
-    clique = next(nx.community.k_clique_communities(G, i), set())
-    if not clique:
-        break
-    best = clique
+for a in conns:
+    for b in conns[a]:
+        for c in conns[b]:
+            if a != c and a in conns[c]:
+                sets.add(tuple(sorted([a, b, c])))
 
-
-print(*list(sorted(best)), sep=",")
+print(sum(any(x.startswith("t") for x in s) for s in sets))
