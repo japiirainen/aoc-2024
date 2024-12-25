@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
-from itertools import takewhile
 
 lhs, khs = [], []
 
 T = lambda xs: list(zip(*xs))
-H = lambda xs: [len(list(takewhile(lambda c: c == "#", x))) - 1 for x in xs]
+H = lambda xs: [x.count("#") - 1 for x in xs]
 
 for block in open(0).read().split("\n\n"):
     block = block.splitlines()
